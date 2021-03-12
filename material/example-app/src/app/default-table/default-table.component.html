@@ -1,0 +1,41 @@
+<div class="example-container mat-elevation-z8">
+  <div class="example-loading-shade"
+       *ngIf="isLoadingResults || isError">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <div class="example-rate-limit-reached" *ngIf="isError">
+      GitHub's API rate limit has been reached. It will be reset in one minute.
+    </div>
+  </div>
+
+  <div class="example-table-container">
+
+    <table mat-table class="example-table" matSort
+           [matSortActive]="tableDataSource.defaultSort" matSortDisableClear matSortDirection="desc"
+           (matSortChange)="resetPaging()">
+
+      <ng-container [matColumnDef]="column.key" *ngFor="let column of tableDataSource.columns">
+        <div *ngIf="!column.sort">
+          <th mat-header-cell *matHeaderCellDef> {{column.label}} </th>
+        </div>
+        <div *ngIf="column.sort">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> {{column.label}} </th>
+        </div>
+        <div *ngIf="!column.getFormatted">
+          <td mat-cell *matCellDef="let element"> {{element[column.key]}} </td>
+        </div>
+        <div *ngIf="column.getFormatted">
+          <td mat-cell *matCellDef="let element"> {{column.getFormatted(element[column.key])}} </td>
+        </div>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <mat-paginator #paginator
+      [length]="resultsLength"
+      [pageSize]="paginator?.pageSize || 10"
+      [pageSizeOptions]="[5, 10, 30]">
+  </mat-paginator>
+</div>
