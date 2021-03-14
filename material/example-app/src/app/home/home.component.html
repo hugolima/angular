@@ -1,11 +1,16 @@
 <h2>Git Issues</h2>
 
+<p *ngIf="gitIssueSelected">
+  Issue ID: {{ gitIssueSelected.number }}<br/>
+  Issue Title: {{ gitIssueSelected.title }}
+</p>
+
 <div>
-  <app-default-table [tableDataSource]="homeTableDataSource"></app-default-table>
+  <app-default-table [tableConfig]="homeTableConfig"></app-default-table>
 </div>
 
 <h2>Git Commits</h2>
 
 <div>
-  <app-default-table [tableDataSource]="commitsTableDataSource"></app-default-table>
+  <app-default-table [tableConfig]="commitsTableConfig"></app-default-table>
 </div>

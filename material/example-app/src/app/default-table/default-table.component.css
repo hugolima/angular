@@ -42,3 +42,7 @@ table {
 .mat-column-created {
   max-width: 124px;
 }
+
+.mat-column-select {
+  overflow: initial;
+}

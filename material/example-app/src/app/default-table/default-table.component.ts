@@ -1,3 +1,4 @@
+import { SelectionModel } from '@angular/cdk/collections';
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -14,7 +15,7 @@ export class DefaultTableComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<any>;
-  @Input() tableDataSource!: TableDataSource;
+  @Input() tableConfig!: TableConfig;
 
   changeParamsObservable!: Observable<any[]>;
   resultsLength = 0;
@@ -22,10 +23,14 @@ export class DefaultTableComponent implements AfterViewInit, OnInit {
   isError = false;
   displayedColumns!: string[];
 
+  initialSelection = [];
+  allowMultiSelect = false;
+  selection = new SelectionModel<any>(this.allowMultiSelect, this.initialSelection);
+
   constructor() {}
 
   ngOnInit(): void {
-    this.displayedColumns = this.tableDataSource.columns.map(c => c.key);
+    this.displayedColumns = this.tableConfig.columns.map(c => c.key);
   }
 
   ngAfterViewInit(): void {
@@ -39,7 +44,7 @@ export class DefaultTableComponent implements AfterViewInit, OnInit {
       startWith({}),
       switchMap(() => {
         this.isLoadingResults = true;
-        return this.tableDataSource.getData(this.sort, this.paginator);
+        return this.tableConfig.getData(this.sort, this.paginator);
       }),
       map((data:TableContent) => {
         this.isLoadingResults = false;
@@ -60,12 +65,30 @@ export class DefaultTableComponent implements AfterViewInit, OnInit {
   resetPaging(): void {
     this.paginator.pageIndex = 0;
   }
+
+  toggleSelection(row:any) {
+    this.selection.toggle(row);
+    this.tableConfig.selectedRowChanged(this.selection.selected);
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.paginator.pageSize;
+    return numSelected == numRows;
+  }
+
+  allToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.changeParamsObservable.forEach(row => this.selection.select(row));
+  }
 }
 
-export interface TableDataSource {
-  getData: (sort: MatSort, paginator: MatPaginator) => Observable<TableContent>;
+export interface TableConfig {
   defaultSort: string;
   columns: TableColumn[];
+  selectedRowChanged: (row:any[]) => void;
+  getData: (sort: MatSort, paginator: MatPaginator) => Observable<TableContent>;
 }
 
 export interface TableColumn {

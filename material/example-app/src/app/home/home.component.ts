@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
-import { TableColumn, TableContent, TableDataSource } from '../default-table/default-table.component';
+import { TableColumn, TableContent, TableConfig } from '../default-table/default-table.component';
 import { DatePipe } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { map } from 'rxjs/operators';
@@ -13,19 +13,25 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  homeTableDataSource: HomeTableDataSource;
-  commitsTableDataSource: CommitsTableDataSource;
+  homeTableConfig: HomeTableConfig;
+  commitsTableConfig: CommitsTableConfig;
+
+  gitIssueSelected: any;
 
   constructor(
     httpClient: HttpClient,
     datePipe: DatePipe
   ) {
-    this.homeTableDataSource = new HomeTableDataSource(httpClient, datePipe);
-    this.commitsTableDataSource = new CommitsTableDataSource(httpClient, datePipe);
+    this.homeTableConfig = new HomeTableConfig(httpClient, datePipe, this.homeTableRowChanged);
+    this.commitsTableConfig = new CommitsTableConfig(httpClient, datePipe);
+  }
+
+  homeTableRowChanged = (row: any[]): void => {
+    this.gitIssueSelected = row[0];
   }
 }
 
-class HomeTableDataSource implements TableDataSource {
+class HomeTableConfig implements TableConfig {
   defaultSort = 'created';
 
   columns:TableColumn[] = [
@@ -36,8 +42,13 @@ class HomeTableDataSource implements TableDataSource {
 
   constructor(
     private httpClient: HttpClient,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private selectedRowChangedCallback: (row: any[]) => void,
   ) {}
+
+  selectedRowChanged(row: any[]): void {
+    this.selectedRowChangedCallback(row);
+  }
 
   getData = (sort: MatSort, paginator: MatPaginator): Observable<TableContent> => {
     const href = 'https://api.github.com/search/issues';
@@ -47,7 +58,7 @@ class HomeTableDataSource implements TableDataSource {
   }
 }
 
-class CommitsTableDataSource implements TableDataSource {
+class CommitsTableConfig implements TableConfig {
   defaultSort = 'committer-date';
 
   columns:TableColumn[] = [
@@ -60,6 +71,10 @@ class CommitsTableDataSource implements TableDataSource {
     private httpClient: HttpClient,
     private datePipe: DatePipe
   ) {}
+
+  selectedRowChanged(row: any[]): void {
+    // not implemented yet
+  }
 
   getData = (sort: MatSort, paginator: MatPaginator): Observable<TableContent> => {
     const href = 'https://api.github.com/search/commits';
