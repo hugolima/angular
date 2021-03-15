@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { AfterContentInit, AfterViewInit, Component, ContentChildren, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ContentChildren, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -20,7 +20,9 @@ export class DefaultTableComponent implements AfterViewInit, AfterContentInit {
 
   @Input() defaultSort!: string;
   @Input() getData!: (sort: MatSort, paginator: MatPaginator) => Observable<TableContent>;
-  @Input() selectedRowChanged?: (row:any[]) => void;
+
+  @Output() onRowSelect = new EventEmitter();
+  @Output() onRowUnselect = new EventEmitter();
 
   changeParamsObservable!: Observable<any[]>;
   resultsLength = 0;
@@ -71,7 +73,11 @@ export class DefaultTableComponent implements AfterViewInit, AfterContentInit {
 
   toggleSelection(row:any) {
     this.selection.toggle(row);
-    this.selectedRowChanged && this.selectedRowChanged(this.selection.selected);
+    if (this.selection.isSelected(row)) {
+      this.onRowSelect.emit(row);
+    } else {
+      this.onRowUnselect.emit(row);
+    }
   }
 
   isAllSelected() {

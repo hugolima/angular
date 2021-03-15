@@ -6,7 +6,11 @@
 </p>
 
 <div>
-  <app-default-table [getData]="getHomeData" defaultSort="created" [selectedRowChanged]="homeTableRowChanged">
+  <app-default-table
+      [getData]="getHomeData"
+      defaultSort="created"
+      (onRowSelect)="homeTableOnRowSelect($event)"
+      (onRowUnselect)="homeTableOnRowUnselect()">
     <default-column key="created_at" label="Created" [sort]="true">
       <ng-template let-created_at="value" #template>
         {{created_at | date}}

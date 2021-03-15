@@ -25,8 +25,12 @@ export class HomeComponent {
     return this.httpClient.get<TableContent>(requestUrl);
   }
 
-  homeTableRowChanged = (row: any[]): void => {
-    this.gitIssueSelected = row[0];
+  homeTableOnRowSelect = (row: any): void => {
+    this.gitIssueSelected = row;
+  }
+
+  homeTableOnRowUnselect = (): void => {
+    this.gitIssueSelected = undefined;
   }
 
   getCommitData = (sort: MatSort, paginator: MatPaginator): Observable<TableContent> => {
@@ -42,7 +46,7 @@ export class HomeComponent {
         result.items = result.items.map(item => ({
           author: item.commit.author.name,
           date: item.commit.committer.date,
-          message: item.commit.message,
+          message: (item.commit.message && item.commit.message.length > 80) ? item.commit.message.substring(0, 80) : item.commit.message,
         }))
         return result;
       })
