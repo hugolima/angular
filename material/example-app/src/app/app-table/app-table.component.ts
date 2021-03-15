@@ -33,6 +33,7 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
   isLoadingResults = true;
   isError = false;
   displayedColumns!: string[];
+  displayedSearchColumns!: string[];
   initialSelection: SelectionModel<any>[] = [];
   selection!: SelectionModel<any>;
 
@@ -44,10 +45,12 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
 
   ngAfterContentInit(): void {
     this.displayedColumns = this.columns.map((c:TableColumn) => c.key);
+    this.displayedSearchColumns = this.columns.map((c:TableColumn) => (`${c.key}-search`));
     this.selection = new SelectionModel<any>(this.allowMultiSelect, this.initialSelection);
 
     if (this.showCheckbox) {
       this.displayedColumns.unshift('chkBoxSelect');
+      this.displayedSearchColumns.unshift('empty-column-search');
     }
   }
 

@@ -50,3 +50,11 @@ table {
 .mat-row-select {
   background-color: #E3F2FD;
 }
+
+.th-search {
+  padding: 0.5em 1em 0 0;
+}
+
+.input-search {
+  width: 100%;
+}
