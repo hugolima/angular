@@ -46,3 +46,7 @@ table {
 .mat-column-select {
   overflow: initial;
 }
+
+.mat-row-select {
+  background-color: #E3F2FD;
+}

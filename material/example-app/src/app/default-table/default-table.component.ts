@@ -19,8 +19,10 @@ export class DefaultTableComponent implements AfterViewInit, AfterContentInit {
   @ViewChild(MatTable) table!: MatTable<any>;
   @ContentChildren(ColumnComponent) columns!: TableColumn[];
 
-  @Input() defaultSort!: string;
   @Input() getData!: (sort: MatSort, paginator: MatPaginator) => Observable<TableContent>;
+  @Input() defaultSort!: string;
+  @Input() allowMultiSelect: boolean = false;
+  @Input() showCheckbox: boolean = false;
 
   @Output() onRowSelect = new EventEmitter();
   @Output() onRowUnselect = new EventEmitter();
@@ -30,10 +32,8 @@ export class DefaultTableComponent implements AfterViewInit, AfterContentInit {
   isLoadingResults = true;
   isError = false;
   displayedColumns!: string[];
-
-  initialSelection = [];
-  allowMultiSelect = false;
-  selection = new SelectionModel<any>(this.allowMultiSelect, this.initialSelection);
+  initialSelection: SelectionModel<any>[] = [];
+  selection!: SelectionModel<any>;
 
   constructor() {}
 
@@ -43,6 +43,11 @@ export class DefaultTableComponent implements AfterViewInit, AfterContentInit {
 
   ngAfterContentInit(): void {
     this.displayedColumns = this.columns.map((c:TableColumn) => c.key);
+    this.selection = new SelectionModel<any>(this.allowMultiSelect, this.initialSelection);
+
+    if (this.showCheckbox) {
+      this.displayedColumns.unshift('chkBoxSelect');
+    }
   }
 
   initDataSource() {

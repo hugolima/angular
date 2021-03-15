@@ -24,7 +24,11 @@
 <h2>Git Commits</h2>
 
 <div>
-  <app-default-table [getData]="getCommitData" defaultSort="committer-date">
+  <app-default-table
+      [getData]="getCommitData"
+      defaultSort="committer-date"
+      [allowMultiSelect]="true"
+      [showCheckbox]="true">
     <default-column key="date" label="Date" [sort]="true">
       <ng-template let-dateOfCommit="value" #template>
         {{dateOfCommit | date}}

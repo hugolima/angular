@@ -12,12 +12,12 @@
            [matSortActive]="defaultSort" matSortDisableClear matSortDirection="desc"
            (matSortChange)="resetPaging()">
 
-      <ng-container matColumnDef="select">
+      <ng-container matColumnDef="chkBoxSelect">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-checkbox (change)="$event ? allToggle() : null"
+          <!-- <mat-checkbox (change)="$event ? allToggle() : null"
                         [checked]="selection.hasValue() && isAllSelected()"
                         [indeterminate]="selection.hasValue() && !isAllSelected()">
-          </mat-checkbox>
+          </mat-checkbox> -->
         </th>
         <td mat-cell *matCellDef="let row">
           <mat-checkbox (click)="$event.stopPropagation()"
@@ -45,7 +45,10 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleSelection(row)"></tr>
+      <tr mat-row
+          *matRowDef="let row; columns: displayedColumns;"
+          (click)="toggleSelection(row)"
+          [class.mat-row-select]="selection.isSelected(row)"></tr>
     </table>
   </div>
 
