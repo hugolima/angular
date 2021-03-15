@@ -1,21 +1,26 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ContentChildren, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { ColumnComponent } from './column.component';
 
 @Component({
   selector: 'app-default-table',
   templateUrl: './default-table.component.html',
   styleUrls: ['./default-table.component.css']
 })
-export class DefaultTableComponent implements AfterViewInit, OnInit {
+export class DefaultTableComponent implements AfterViewInit, AfterContentInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<any>;
-  @Input() tableConfig!: TableConfig;
+  @ContentChildren(ColumnComponent) columns: any;
+
+  @Input() defaultSort!: string;
+  @Input() getData!: (sort: MatSort, paginator: MatPaginator) => Observable<TableContent>;
+  @Input() selectedRowChanged?: (row:any[]) => void;
 
   changeParamsObservable!: Observable<any[]>;
   resultsLength = 0;
@@ -29,14 +34,12 @@ export class DefaultTableComponent implements AfterViewInit, OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.displayedColumns = this.tableConfig.columns.map(c => c.key);
+  ngAfterViewInit(): void {
+    this.initDataSource();
   }
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.initDataSource();
-    });
+  ngAfterContentInit(): void {
+    this.displayedColumns = this.columns.map((c:any) => c.key);
   }
 
   initDataSource() {
@@ -44,7 +47,7 @@ export class DefaultTableComponent implements AfterViewInit, OnInit {
       startWith({}),
       switchMap(() => {
         this.isLoadingResults = true;
-        return this.tableConfig.getData(this.sort, this.paginator);
+        return this.getData(this.sort, this.paginator);
       }),
       map((data:TableContent) => {
         this.isLoadingResults = false;
@@ -68,7 +71,7 @@ export class DefaultTableComponent implements AfterViewInit, OnInit {
 
   toggleSelection(row:any) {
     this.selection.toggle(row);
-    this.tableConfig.selectedRowChanged(this.selection.selected);
+    this.selectedRowChanged && this.selectedRowChanged(this.selection.selected);
   }
 
   isAllSelected() {
@@ -82,20 +85,6 @@ export class DefaultTableComponent implements AfterViewInit, OnInit {
         this.selection.clear() :
         this.changeParamsObservable.forEach(row => this.selection.select(row));
   }
-}
-
-export interface TableConfig {
-  defaultSort: string;
-  columns: TableColumn[];
-  selectedRowChanged: (row:any[]) => void;
-  getData: (sort: MatSort, paginator: MatPaginator) => Observable<TableContent>;
-}
-
-export interface TableColumn {
-  key: string;
-  label: string;
-  sort?: boolean;
-  getFormatted?: (data:any) => string | null;
 }
 
 export interface TableContent {

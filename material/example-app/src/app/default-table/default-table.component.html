@@ -9,7 +9,7 @@
 
   <div class="example-table-container">
     <table mat-table class="example-table" matSort
-           [matSortActive]="tableConfig.defaultSort" matSortDisableClear matSortDirection="desc"
+           [matSortActive]="defaultSort" matSortDisableClear matSortDirection="desc"
            (matSortChange)="resetPaging()">
 
       <ng-container matColumnDef="select">
@@ -27,18 +27,20 @@
         </td>
       </ng-container>
 
-      <ng-container [matColumnDef]="column.key" *ngFor="let column of tableConfig.columns">
+      <ng-container [matColumnDef]="column.key" *ngFor="let column of columns">
         <div *ngIf="!column.sort">
           <th mat-header-cell *matHeaderCellDef> {{column.label}} </th>
         </div>
         <div *ngIf="column.sort">
           <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> {{column.label}} </th>
         </div>
-        <div *ngIf="!column.getFormatted">
+        <div *ngIf="!column.valueTemplate">
           <td mat-cell *matCellDef="let element"> {{element[column.key]}} </td>
         </div>
-        <div *ngIf="column.getFormatted">
-          <td mat-cell *matCellDef="let element"> {{column.getFormatted(element[column.key])}} </td>
+        <div *ngIf="column.valueTemplate">
+          <td mat-cell *matCellDef="let element">
+            <ng-template [ngTemplateOutlet]="column.valueTemplate" [ngTemplateOutletContext]="{value: element[column.key]}"></ng-template>
+          </td>
         </div>
       </ng-container>
 

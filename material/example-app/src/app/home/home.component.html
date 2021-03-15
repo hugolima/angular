@@ -6,11 +6,27 @@
 </p>
 
 <div>
-  <app-default-table [tableConfig]="homeTableConfig"></app-default-table>
+  <app-default-table [getData]="getHomeData" defaultSort="created" [selectedRowChanged]="homeTableRowChanged">
+    <default-column key="created_at" label="Created" [sort]="true">
+      <ng-template let-created_at="value" #template>
+        {{created_at | date}}
+      </ng-template>
+    </default-column>
+    <default-column key="title" label="Title"></default-column>
+    <default-column key="number" label="#"></default-column>
+  </app-default-table>
 </div>
 
 <h2>Git Commits</h2>
 
 <div>
-  <app-default-table [tableConfig]="commitsTableConfig"></app-default-table>
+  <app-default-table [getData]="getCommitData" defaultSort="committer-date">
+    <default-column key="date" label="Date" [sort]="true">
+      <ng-template let-dateOfCommit="value" #template>
+        {{dateOfCommit | date}}
+      </ng-template>
+    </default-column>
+    <default-column key="author" label="Author"></default-column>
+    <default-column key="message" label="Message"></default-column>
+  </app-default-table>
 </div>
