@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { map } from 'rxjs/operators';
-import { TableContent } from '../default-table/types';
+import { TableContent } from '../app-table/types';
 
 @Component({
   selector: 'app-home',

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { DefaultTableComponent } from './default-table.component';
+import { AppTableComponent } from './app-table.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -11,7 +11,7 @@ import { ColumnComponent } from './column.component';
 
 @NgModule({
   declarations: [
-    DefaultTableComponent,
+    AppTableComponent,
     ColumnComponent,
   ],
   imports: [
@@ -23,8 +23,8 @@ import { ColumnComponent } from './column.component';
     MatProgressSpinnerModule,
   ],
   exports: [
-    DefaultTableComponent,
+    AppTableComponent,
     ColumnComponent,
   ]
 })
-export class DefaultTableModule { }
+export class AppTableModule { }

@@ -9,11 +9,11 @@ import { ColumnComponent } from './column.component';
 import { TableColumn, TableContent } from './types';
 
 @Component({
-  selector: 'app-default-table',
-  templateUrl: './default-table.component.html',
-  styleUrls: ['./default-table.component.css']
+  selector: 'app-table',
+  templateUrl: './app-table.component.html',
+  styleUrls: ['./app-table.component.css']
 })
-export class DefaultTableComponent implements AfterViewInit, AfterContentInit {
+export class AppTableComponent implements AfterViewInit, AfterContentInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<any>;
