@@ -9,8 +9,8 @@
   <app-table
       [getData]="getHomeData"
       defaultSort="created"
-      (onRowSelect)="homeTableOnRowSelect($event)"
-      (onRowUnselect)="homeTableOnRowUnselect()">
+      (rowSelect)="homeTableOnRowSelect($event)"
+      (rowUnselect)="homeTableOnRowUnselect()">
     <app-column key="created_at" label="Created" [sort]="true">
       <ng-template let-created_at="value" #template>
         {{created_at | date}}

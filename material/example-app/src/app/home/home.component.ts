@@ -18,9 +18,9 @@ export class HomeComponent {
     private httpClient: HttpClient
   ) {}
 
-  getHomeData = (sort: MatSort, paginator: MatPaginator): Observable<TableContent> => {
+  getHomeData = (sort: MatSort, paginator: MatPaginator, searchData: any): Observable<TableContent> => {
     const href = 'https://api.github.com/search/issues';
-    const requestUrl = `${href}?q=repo:angular/components&sort=${'created'}&order=${sort.direction}&page=${paginator.pageIndex + 1}&per_page=${paginator.pageSize}`;
+    const requestUrl = `${href}?q=repo:angular/components+${searchData.title}+in:title&sort=${'created'}&order=${sort.direction}&page=${paginator.pageIndex + 1}&per_page=${paginator.pageSize}`;
 
     return this.httpClient.get<TableContent>(requestUrl);
   }
@@ -33,7 +33,7 @@ export class HomeComponent {
     this.gitIssueSelected = undefined;
   }
 
-  getCommitData = (sort: MatSort, paginator: MatPaginator): Observable<TableContent> => {
+  getCommitData = (sort: MatSort, paginator: MatPaginator, searchData: any): Observable<TableContent> => {
     const href = 'https://api.github.com/search/commits';
     const requestUrl = `${href}?q=repo:angular/components+css&sort=${'committer-date'}&order=${sort.direction}&page=${paginator.pageIndex + 1}&per_page=${paginator.pageSize}`;
 

@@ -1,5 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { AfterContentInit, AfterViewInit, Component, ContentChildren, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -19,13 +20,13 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
   @ViewChild(MatTable) table!: MatTable<any>;
   @ContentChildren(ColumnComponent) columns!: TableColumn[];
 
-  @Input() getData!: (sort: MatSort, paginator: MatPaginator) => Observable<TableContent>;
+  @Input() getData!: (sort: MatSort, paginator: MatPaginator, searchData: any) => Observable<TableContent>;
   @Input() defaultSort!: string;
   @Input() allowMultiSelect: boolean = false;
   @Input() showCheckbox: boolean = false;
 
-  @Output() onRowSelect = new EventEmitter();
-  @Output() onRowUnselect = new EventEmitter();
+  @Output() rowSelect = new EventEmitter();
+  @Output() rowUnselect = new EventEmitter();
 
   changeParamsObservable!: Observable<any[]>;
   itemsCopy:any = [];
@@ -36,6 +37,9 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
   displayedSearchColumns!: string[];
   initialSelection: SelectionModel<any>[] = [];
   selection!: SelectionModel<any>;
+
+  searchForm: any = {};
+  searchEvent = new EventEmitter<any>();
 
   constructor() {}
 
@@ -48,6 +52,10 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
     this.displayedSearchColumns = this.columns.map((c:TableColumn) => (`${c.key}-search`));
     this.selection = new SelectionModel<any>(this.allowMultiSelect, this.initialSelection);
 
+    this.columns.forEach((c:TableColumn) => {
+      this.searchForm[c.key] = new FormControl('');
+    })
+
     if (this.showCheckbox) {
       this.displayedColumns.unshift('chkBoxSelect');
       this.displayedSearchColumns.unshift('empty-column-search');
@@ -55,11 +63,12 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
   }
 
   initDataSource() {
-    this.changeParamsObservable = merge(this.sort.sortChange, this.paginator.page).pipe(
+    this.changeParamsObservable = merge(this.sort.sortChange, this.paginator.page, this.searchEvent).pipe(
       startWith({}),
       switchMap(() => {
         this.isLoadingResults = true;
-        return this.getData(this.sort, this.paginator);
+        const searchData: any = this.getSearchData();
+        return this.getData(this.sort, this.paginator, searchData);
       }),
       map((data:TableContent) => {
         this.isLoadingResults = false;
@@ -85,9 +94,9 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
   toggleSelection(row:any) {
     this.selection.toggle(row.id);
     if (this.selection.isSelected(row.id)) {
-      this.onRowSelect.emit(row);
+      this.rowSelect.emit(row);
     } else {
-      this.onRowUnselect.emit(row);
+      this.rowUnselect.emit(row);
     }
   }
 
@@ -101,5 +110,13 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
     this.isAllSelected() ?
         this.selection.clear() :
         this.itemsCopy.forEach((row:any) => this.selection.select(row.id));
+  }
+
+  private getSearchData(): any {
+    let result: any = {};
+    Object.keys(this.searchForm).forEach(key => {
+      result[key] = this.searchForm[key].value;
+    })
+    return result;
   }
 }

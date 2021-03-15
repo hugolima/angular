@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ColumnComponent } from './column.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ColumnComponent } from './column.component';
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     MatTableModule,
     MatCheckboxModule,
     MatPaginatorModule,

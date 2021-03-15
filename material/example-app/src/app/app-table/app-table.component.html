@@ -43,7 +43,7 @@
         <ng-container [matColumnDef]="column.key + '-search'">
           <th mat-header-cell *matHeaderCellDef class="th-search">
             <mat-form-field appearance="fill" class="input-search">
-              <input matInput>
+              <input matInput [formControl]="searchForm[column.key]" (keyup.enter)="searchEvent.emit()">
             </mat-form-field>
           </th>
         </ng-container>
