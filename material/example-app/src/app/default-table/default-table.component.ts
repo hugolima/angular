@@ -6,6 +6,7 @@ import { MatTable } from '@angular/material/table';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { ColumnComponent } from './column.component';
+import { TableColumn, TableContent } from './types';
 
 @Component({
   selector: 'app-default-table',
@@ -16,7 +17,7 @@ export class DefaultTableComponent implements AfterViewInit, AfterContentInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<any>;
-  @ContentChildren(ColumnComponent) columns: any;
+  @ContentChildren(ColumnComponent) columns!: TableColumn[];
 
   @Input() defaultSort!: string;
   @Input() getData!: (sort: MatSort, paginator: MatPaginator) => Observable<TableContent>;
@@ -41,7 +42,7 @@ export class DefaultTableComponent implements AfterViewInit, AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    this.displayedColumns = this.columns.map((c:any) => c.key);
+    this.displayedColumns = this.columns.map((c:TableColumn) => c.key);
   }
 
   initDataSource() {
@@ -91,9 +92,4 @@ export class DefaultTableComponent implements AfterViewInit, AfterContentInit {
         this.selection.clear() :
         this.changeParamsObservable.forEach(row => this.selection.select(row));
   }
-}
-
-export interface TableContent {
-  items: any[];
-  total_count: number;
 }

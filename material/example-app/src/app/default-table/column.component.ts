@@ -1,10 +1,11 @@
 import { Component, ContentChild, Input, TemplateRef } from "@angular/core";
+import { TableColumn } from "./types";
 
 @Component({
   selector: 'default-column',
   template: ''
 })
-export class ColumnComponent {
+export class ColumnComponent implements TableColumn {
   @Input()
   public key!: string;
 

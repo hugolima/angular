@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
-import { TableContent } from '../default-table/default-table.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { map } from 'rxjs/operators';
+import { TableContent } from '../default-table/types';
 
 @Component({
   selector: 'app-home',
