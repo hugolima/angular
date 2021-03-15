@@ -44,6 +44,7 @@ export class HomeComponent {
     return this.httpClient.get<TableContent>(requestUrl, httpOptions).pipe(
       map(result => {
         result.items = result.items.map(item => ({
+          id: item.sha,
           author: item.commit.author.name,
           date: item.commit.committer.date,
           message: (item.commit.message && item.commit.message.length > 80) ? item.commit.message.substring(0, 80) : item.commit.message,

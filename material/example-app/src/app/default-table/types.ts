@@ -1,8 +1,8 @@
 import { TemplateRef } from "@angular/core";
 
 export interface TableContent {
-  items: any[];
   total_count: number;
+  items: any[];
 }
 
 export interface TableColumn {

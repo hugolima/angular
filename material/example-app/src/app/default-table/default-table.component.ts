@@ -28,6 +28,7 @@ export class DefaultTableComponent implements AfterViewInit, AfterContentInit {
   @Output() onRowUnselect = new EventEmitter();
 
   changeParamsObservable!: Observable<any[]>;
+  itemsCopy:any = [];
   resultsLength = 0;
   isLoadingResults = true;
   isError = false;
@@ -61,6 +62,7 @@ export class DefaultTableComponent implements AfterViewInit, AfterContentInit {
         this.isLoadingResults = false;
         this.isError = false;
         this.resultsLength = data.total_count;
+        this.itemsCopy = data.items;
         return data.items;
       }),
       catchError(() => {
@@ -78,8 +80,8 @@ export class DefaultTableComponent implements AfterViewInit, AfterContentInit {
   }
 
   toggleSelection(row:any) {
-    this.selection.toggle(row);
-    if (this.selection.isSelected(row)) {
+    this.selection.toggle(row.id);
+    if (this.selection.isSelected(row.id)) {
       this.onRowSelect.emit(row);
     } else {
       this.onRowUnselect.emit(row);
@@ -95,6 +97,6 @@ export class DefaultTableComponent implements AfterViewInit, AfterContentInit {
   allToggle() {
     this.isAllSelected() ?
         this.selection.clear() :
-        this.changeParamsObservable.forEach(row => this.selection.select(row));
+        this.itemsCopy.forEach((row:any) => this.selection.select(row.id));
   }
 }
