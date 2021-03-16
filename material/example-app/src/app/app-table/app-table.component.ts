@@ -12,7 +12,7 @@ import { TableColumn, TableContent } from './types';
 @Component({
   selector: 'app-table',
   templateUrl: './app-table.component.html',
-  styleUrls: ['./app-table.component.css']
+  styleUrls: ['./app-table.component.sass']
 })
 export class AppTableComponent implements AfterViewInit, AfterContentInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -29,17 +29,18 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
   @Output() rowUnselect = new EventEmitter();
 
   changeParamsObservable!: Observable<any[]>;
-  itemsCopy:any = [];
+  rowsId: any = [];
   resultsLength = 0;
   isLoadingResults = true;
   isError = false;
   displayedColumns!: string[];
   displayedSearchColumns!: string[];
+  displayMessageColumn: string[] = [];
   initialSelection: SelectionModel<any>[] = [];
   selection!: SelectionModel<any>;
 
   searchForm: any = {};
-  searchEvent = new EventEmitter<any>();
+  private searchEvent = new EventEmitter<any>();
 
   constructor() {}
 
@@ -74,7 +75,8 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
         this.isLoadingResults = false;
         this.isError = false;
         this.resultsLength = data.total_count;
-        this.itemsCopy = data.items;
+        this.rowsId = data.items.map(i => i.id);
+        this.displayMessageColumn = this.rowsId.length > 0 ? [] : ['no-data'];
         return data.items;
       }),
       catchError(() => {
@@ -88,10 +90,18 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
   }
 
   resetPaging(): void {
+    this.selection.clear();
+    this.rowUnselect.emit(null);
     this.paginator.pageIndex = 0;
   }
 
-  toggleSelection(row:any) {
+  emitSearchEvent() {
+    this.selection.clear();
+    this.rowUnselect.emit(null);
+    this.searchEvent.emit();
+  }
+
+  toggleSelection(row: any) {
     this.selection.toggle(row.id);
     if (this.selection.isSelected(row.id)) {
       this.rowSelect.emit(row);
@@ -109,7 +119,7 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
   allToggle() {
     this.isAllSelected() ?
         this.selection.clear() :
-        this.itemsCopy.forEach((row:any) => this.selection.select(row.id));
+        this.rowsId.forEach((id:any) => this.selection.select(id));
   }
 
   private getSearchData(): any {
