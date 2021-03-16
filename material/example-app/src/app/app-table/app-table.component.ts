@@ -7,7 +7,7 @@ import { MatTable } from '@angular/material/table';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { ColumnComponent } from './column.component';
-import { TableColumn, TableContent } from './types';
+import { TableColumn, TableContent, TableItem } from './types';
 
 @Component({
   selector: 'app-table',
@@ -17,7 +17,7 @@ import { TableColumn, TableContent } from './types';
 export class AppTableComponent implements AfterViewInit, AfterContentInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<any>;
+  @ViewChild(MatTable) table!: MatTable<TableItem>;
   @ContentChildren(ColumnComponent) columns!: TableColumn[];
 
   @Input() getData!: (sort: MatSort, paginator: MatPaginator, searchData: any) => Observable<TableContent>;
@@ -75,7 +75,7 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
         this.isLoadingResults = false;
         this.isError = false;
         this.resultsLength = data.total_count;
-        this.rowsId = data.items.map(i => i.id);
+        this.rowsId = data.items.map((i: TableItem) => i.id);
         this.displayMessageColumn = this.rowsId.length > 0 ? [] : ['no-data'];
         return data.items;
       }),

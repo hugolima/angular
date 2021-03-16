@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { map } from 'rxjs/operators';
-import { TableContent } from '../app-table/types';
+import { TableContent, TableItem } from '../app-table/types';
 
 @Component({
   selector: 'app-home',
@@ -43,15 +43,23 @@ export class HomeComponent {
 
     return this.httpClient.get<TableContent>(requestUrl, httpOptions).pipe(
       map(result => {
-        result.items = result.items.map(item => ({
-          id: item.sha,
-          author: item.commit.author.name,
-          date: item.commit.committer.date,
-          message: (item.commit.message && item.commit.message.length > 80) ? item.commit.message.substring(0, 80) : item.commit.message,
-        }))
+        result.items = result.items.map((item: TableItem) => {
+          const i = (item as CommitTableItem);
+          return {
+            id: i.sha,
+            author: i.commit.author.name,
+            date: i.commit.committer.date,
+            message: (i.commit.message && i.commit.message.length > 80) ? i.commit.message.substring(0, 80) : i.commit.message,
+          }
+        })
         return result;
       })
     );
   }
+}
+
+interface CommitTableItem extends TableItem {
+  sha: string;
+  commit: any;
 }
 
