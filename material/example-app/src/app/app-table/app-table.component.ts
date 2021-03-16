@@ -49,7 +49,7 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    this.displayedColumns = this.columns.map((c:TableColumn) => c.key);
+    this.displayedColumns = this.columns.filter((c:TableColumn) => !c.hidden).map((c:TableColumn) => c.key);
     this.displayedSearchColumns = this.displayedColumns.map(key => (`${key}-search`));
     this.columnsSelected.setValue(this.displayedColumns.slice());
     this.selection = new SelectionModel<any>(this.allowMultiSelect, this.initialSelection);
@@ -65,7 +65,8 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
       this.searchForm[c.key] = new FormControl('');
     });
 
-    // Add uma coluna com o checkbox e uma coluna vazia na header do filtro para manter o número de colunas iguais
+    // Add uma coluna com o checkbox (caso a tabela exija) e uma coluna vazia no header do filtro para manter
+    // o número de colunas iguais
     if (this.showCheckbox) {
       this.displayedColumns.unshift('chkBoxSelect');
       this.displayedSearchColumns.unshift('empty-column-search');

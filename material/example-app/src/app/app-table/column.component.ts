@@ -13,8 +13,11 @@ export class ColumnComponent implements TableColumn {
   public label!: string;
 
   @Input()
-  public sort?: boolean = false;
+  public sortable: boolean = true;
+
+  @Input()
+  hidden: boolean = false;
 
   @ContentChild('template')
-  public valueTemplate?: TemplateRef<any>;
+  public valueTemplate!: TemplateRef<any>;
 }

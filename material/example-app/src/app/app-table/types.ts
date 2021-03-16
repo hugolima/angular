@@ -12,6 +12,7 @@ export interface TableItem {
 export interface TableColumn {
   key: string;
   label: string;
-  sort?: boolean;
-  valueTemplate?: TemplateRef<any>,
+  sortable: boolean;
+  hidden: boolean;
+  valueTemplate: TemplateRef<any>,
 }

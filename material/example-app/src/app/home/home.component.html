@@ -11,13 +11,14 @@
       defaultSort="created"
       (rowSelect)="homeTableOnRowSelect($event)"
       (rowUnselect)="homeTableOnRowUnselect()">
-    <app-column key="created_at" label="Created" [sort]="true">
+    <app-column key="created_at" label="Created">
       <ng-template let-created_at="value" #template>
         {{created_at | date}}
       </ng-template>
     </app-column>
-    <app-column key="title" label="Title"></app-column>
-    <app-column key="number" label="Number"></app-column>
+    <app-column key="title" label="Title" [sortable]="false"></app-column>
+    <app-column key="number" label="Number" [sortable]="false"></app-column>
+    <app-column key="state" label="State" [sortable]="false" [hidden]="true"></app-column>
   </app-table>
 </div>
 
@@ -29,12 +30,12 @@
       defaultSort="committer-date"
       [allowMultiSelect]="true"
       [showCheckbox]="true">
-    <app-column key="date" label="Date" [sort]="true">
+    <app-column key="date" label="Date" [sortable]="true">
       <ng-template let-dateOfCommit="value" #template>
         {{dateOfCommit | date}}
       </ng-template>
     </app-column>
-    <app-column key="author" label="Author"></app-column>
-    <app-column key="message" label="Message"></app-column>
+    <app-column key="author" label="Author" [sortable]="false"></app-column>
+    <app-column key="message" label="Message" [sortable]="false"></app-column>
   </app-table>
 </div>

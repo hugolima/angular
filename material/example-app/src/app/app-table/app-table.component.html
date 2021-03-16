@@ -14,10 +14,10 @@
           {{columnsSelected.value.length}} colunas selecionadas
         </span>
         <span *ngIf="columnsSelected.value?.length <= 3 && columnsSelected.value?.length > 0" class="example-additional-selection">
-          <span> {{getSelectedColumnLabel(0)}} </span>
+          <span> {{getSelectedColumnLabel(0)}}</span>
         </span>
         <span *ngIf="columnsSelected.value?.length <= 3 && columnsSelected.value?.length > 1" class="example-additional-selection">
-          <span>, {{getSelectedColumnLabel(1)}} </span>
+          <span>, {{getSelectedColumnLabel(1)}}</span>
         </span>
         <span *ngIf="columnsSelected.value?.length <= 3 && columnsSelected.value?.length > 2" class="example-additional-selection">
           <span>, {{getSelectedColumnLabel(2)}}</span>
@@ -56,10 +56,10 @@
       </ng-container>
 
       <ng-container [matColumnDef]="column.key" *ngFor="let column of columns">
-        <div *ngIf="!column.sort">
+        <div *ngIf="!column.sortable">
           <th mat-header-cell *matHeaderCellDef> {{column.label}} </th>
         </div>
-        <div *ngIf="column.sort">
+        <div *ngIf="column.sortable">
           <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> {{column.label}} </th>
         </div>
 
