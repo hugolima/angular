@@ -33,13 +33,6 @@
         <th mat-header-cell *matHeaderCellDef> </th>
       </ng-container>
 
-      <!-- Coluna da mensagem -->
-      <ng-container matColumnDef="no-data">
-        <td mat-footer-cell *matFooterCellDef [attr.colspan]="displayedColumns.length">
-          Nenhum registro encontrado
-        </td>
-      </ng-container>
-
       <ng-container [matColumnDef]="column.key" *ngFor="let column of columns">
         <div *ngIf="!column.sort">
           <th mat-header-cell *matHeaderCellDef> {{column.label}} </th>
@@ -73,7 +66,11 @@
           *matRowDef="let row; columns: displayedColumns;"
           (click)="toggleSelection(row)"
           [class.mat-row-select]="selection.isSelected(row.id)"></tr>
-      <tr mat-footer-row *matFooterRowDef="displayMessageColumn" class="example-second-footer-row"></tr>
+
+      <!-- Row para exibir mensagem de nenhum registro encontrado -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length">Nenhum registro encontrado</td>
+      </tr>
     </table>
   </div>
 

@@ -35,7 +35,6 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
   isError = false;
   displayedColumns!: string[];
   displayedSearchColumns!: string[];
-  displayMessageColumn: string[] = [];
   initialSelection: SelectionModel<any>[] = [];
   selection!: SelectionModel<any>;
 
@@ -76,7 +75,6 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
         this.isError = false;
         this.resultsLength = data.total_count;
         this.rowsId = data.items.map((i: TableItem) => i.id);
-        this.displayMessageColumn = this.rowsId.length > 0 ? [] : ['no-data'];
         return data.items;
       }),
       catchError(() => {
