@@ -7,6 +7,28 @@
     </div>
   </div>
 
+  <mat-form-field appearance="fill" class="select-column">
+    <mat-select [formControl]="columnsSelected" multiple aria-label="Selecionar colunas que serão exibidas">
+      <mat-select-trigger>
+        <span *ngIf="columnsSelected.value?.length > 3" class="example-additional-selection">
+          {{columnsSelected.value.length}} colunas selecionadas
+        </span>
+        <span *ngIf="columnsSelected.value?.length <= 3 && columnsSelected.value?.length > 0" class="example-additional-selection">
+          <span> {{getSelectedColumnLabel(0)}} </span>
+        </span>
+        <span *ngIf="columnsSelected.value?.length <= 3 && columnsSelected.value?.length > 1" class="example-additional-selection">
+          <span>, {{getSelectedColumnLabel(1)}} </span>
+        </span>
+        <span *ngIf="columnsSelected.value?.length <= 3 && columnsSelected.value?.length > 2" class="example-additional-selection">
+          <span>, {{getSelectedColumnLabel(2)}}</span>
+        </span>
+      </mat-select-trigger>
+      <mat-option *ngFor="let column of columns" [value]="column.key"> {{column.label}} </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-flat-button color="primary" (click)="clearSearchData()"> Limpar filtros </button>
+
   <div class="example-table-container">
     <table mat-table class="example-table" matSort
            [matSortActive]="defaultSort" matSortDisableClear matSortDirection="desc"

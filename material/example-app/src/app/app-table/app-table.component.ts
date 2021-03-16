@@ -28,6 +28,7 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
   @Output() rowSelect = new EventEmitter();
   @Output() rowUnselect = new EventEmitter();
 
+  columnsSelected = new FormControl();
   changeParamsObservable!: Observable<any[]>;
   rowsId: any = [];
   resultsLength = 0;
@@ -49,13 +50,22 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
 
   ngAfterContentInit(): void {
     this.displayedColumns = this.columns.map((c:TableColumn) => c.key);
-    this.displayedSearchColumns = this.columns.map((c:TableColumn) => (`${c.key}-search`));
+    this.displayedSearchColumns = this.displayedColumns.map(key => (`${key}-search`));
+    this.columnsSelected.setValue(this.displayedColumns.slice());
     this.selection = new SelectionModel<any>(this.allowMultiSelect, this.initialSelection);
 
+    // Alterar as colunas que são exibidas
+    this.columnsSelected.valueChanges.subscribe((event: any) => {
+      this.displayedColumns = event;
+      this.displayedSearchColumns = this.displayedColumns.map(key => (`${key}-search`));
+    });
+
+    // Add um formControl para cada input de pesquisa
     this.columns.forEach((c:TableColumn) => {
       this.searchForm[c.key] = new FormControl('');
-    })
+    });
 
+    // Add uma coluna com o checkbox e uma coluna vazia na header do filtro para manter o número de colunas iguais
     if (this.showCheckbox) {
       this.displayedColumns.unshift('chkBoxSelect');
       this.displayedSearchColumns.unshift('empty-column-search');
@@ -67,8 +77,7 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
       startWith({}),
       switchMap(() => {
         this.isLoadingResults = true;
-        const searchData: any = this.getSearchData();
-        return this.getData(this.sort, this.paginator, searchData);
+        return this.getData(this.sort, this.paginator, this.getSearchData());
       }),
       map((data:TableContent) => {
         this.isLoadingResults = false;
@@ -120,11 +129,22 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
         this.rowsId.forEach((id:any) => this.selection.select(id));
   }
 
+  getSelectedColumnLabel(index: number) {
+    return this.columns.find(c => c.key === this.columnsSelected.value[index])?.label;
+  }
+
+  clearSearchData() {
+    Object.keys(this.searchForm).forEach(key => {
+      this.searchForm[key].setValue(null);
+    });
+    this.emitSearchEvent();
+  }
+
   private getSearchData(): any {
     let result: any = {};
     Object.keys(this.searchForm).forEach(key => {
       result[key] = this.searchForm[key].value;
-    })
+    });
     return result;
   }
 }
