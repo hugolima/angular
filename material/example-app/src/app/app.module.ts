@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
-import { AppTableModule } from './app-table/app-table.module';
+import { DatatableModule } from './datatable/datatable.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,7 @@ import { AppTableModule } from './app-table/app-table.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    AppTableModule,
+    DatatableModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { AppTableComponent } from './app-table.component';
+import { DatatableComponent } from './datatable.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -16,7 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
-    AppTableComponent,
+    DatatableComponent,
     ColumnComponent,
   ],
   imports: [
@@ -33,8 +33,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule,
   ],
   exports: [
-    AppTableComponent,
+    DatatableComponent,
     ColumnComponent,
   ]
 })
-export class AppTableModule { }
+export class DatatableModule { }

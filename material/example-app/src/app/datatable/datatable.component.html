@@ -1,8 +1,8 @@
-<div class="example-container mat-elevation-z8">
-  <div class="example-loading-shade"
+<div class="app-datatable-container mat-elevation-z8">
+  <div class="app-datatable-loading-shade"
        *ngIf="isLoadingResults || isError">
     <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
-    <div class="example-rate-limit-reached" *ngIf="isError">
+    <div class="app-datatable-rate-limit-reached" *ngIf="isError">
       GitHub's API rate limit has been reached. It will be reset in one minute.
     </div>
   </div>
@@ -10,16 +10,16 @@
   <mat-form-field appearance="fill" class="select-column">
     <mat-select [formControl]="columnsSelected" multiple aria-label="Selecionar colunas que serão exibidas">
       <mat-select-trigger>
-        <span *ngIf="columnsSelected.value?.length > 3" class="example-additional-selection">
+        <span *ngIf="columnsSelected.value?.length > 3" class="app-datatable-additional-selection">
           {{columnsSelected.value.length}} colunas selecionadas
         </span>
-        <span *ngIf="columnsSelected.value?.length <= 3 && columnsSelected.value?.length > 0" class="example-additional-selection">
+        <span *ngIf="columnsSelected.value?.length <= 3 && columnsSelected.value?.length > 0" class="app-datatable-additional-selection">
           <span> {{getSelectedColumnLabel(0)}}</span>
         </span>
-        <span *ngIf="columnsSelected.value?.length <= 3 && columnsSelected.value?.length > 1" class="example-additional-selection">
+        <span *ngIf="columnsSelected.value?.length <= 3 && columnsSelected.value?.length > 1" class="app-datatable-additional-selection">
           <span>, {{getSelectedColumnLabel(1)}}</span>
         </span>
-        <span *ngIf="columnsSelected.value?.length <= 3 && columnsSelected.value?.length > 2" class="example-additional-selection">
+        <span *ngIf="columnsSelected.value?.length <= 3 && columnsSelected.value?.length > 2" class="app-datatable-additional-selection">
           <span>, {{getSelectedColumnLabel(2)}}</span>
         </span>
       </mat-select-trigger>
@@ -29,10 +29,10 @@
 
   <button mat-flat-button color="primary" (click)="clearSearchData()"> Limpar filtros </button>
 
-  <div class="example-table-container">
-    <table mat-table class="example-table" matSort
+  <div class="app-datatable-table-container">
+    <table mat-table class="app-datatable-table" matSort
            [matSortActive]="defaultSort" matSortDisableClear matSortDirection="desc"
-           (matSortChange)="resetPaging()">
+           (matSortChange)="resetTable()">
 
       <ng-container matColumnDef="chkBoxSelect">
         <th mat-header-cell *matHeaderCellDef>

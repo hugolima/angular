@@ -10,11 +10,11 @@ import { ColumnComponent } from './column.component';
 import { TableColumn, TableContent, TableItem } from './types';
 
 @Component({
-  selector: 'app-table',
-  templateUrl: './app-table.component.html',
-  styleUrls: ['./app-table.component.sass']
+  selector: 'app-datatable',
+  templateUrl: './datatable.component.html',
+  styleUrls: ['./datatable.component.sass']
 })
-export class AppTableComponent implements AfterViewInit, AfterContentInit {
+export class DatatableComponent implements AfterViewInit, AfterContentInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<TableItem>;
@@ -97,7 +97,7 @@ export class AppTableComponent implements AfterViewInit, AfterContentInit {
     this.table.dataSource = this.changeParamsObservable;
   }
 
-  resetPaging(): void {
+  resetTable(): void {
     this.selection.clear();
     this.rowUnselect.emit(null);
     this.paginator.pageIndex = 0;

@@ -6,7 +6,7 @@
 </p>
 
 <div>
-  <app-table
+  <app-datatable
       [getData]="getHomeData"
       defaultSort="created"
       (rowSelect)="homeTableOnRowSelect($event)"
@@ -19,13 +19,13 @@
     <app-column key="title" label="Title" [sortable]="false"></app-column>
     <app-column key="number" label="Number" [sortable]="false"></app-column>
     <app-column key="state" label="State" [sortable]="false" [hidden]="true"></app-column>
-  </app-table>
+  </app-datatable>
 </div>
 
 <h2>Git Commits</h2>
 
 <div>
-  <app-table
+  <app-datatable
       [getData]="getCommitData"
       defaultSort="committer-date"
       [allowMultiSelect]="true"
@@ -37,5 +37,5 @@
     </app-column>
     <app-column key="author" label="Author" [sortable]="false"></app-column>
     <app-column key="message" label="Message" [sortable]="false"></app-column>
-  </app-table>
+  </app-datatable>
 </div>
