@@ -1,8 +1,7 @@
 {
-  "sessao-usuario": { "cpfCnpj": "11111111111", "nome": "Fulano de Tal" },
   "clientes": [
-    { "id": 1, "cpf": "11111111111", "nome": "Fulano de Tal" },
-    { "id": 2, "cpf": "22222222222", "nome": "Ciclano da Silva" }
+    { "id": 1, "cpfCnpj": "11111111111", "nome": "Fulano de Tal", "senha": "123456" },
+    { "id": 2, "cpfCnpj": "22222222222", "nome": "Ciclano da Silva", "senha": "123" }
   ],
   "posts": [
     { "id": 1, "title": "json-server", "author": "typicode" }

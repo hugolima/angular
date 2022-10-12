@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
     this.appState.sessaoUsuario.pipe(take(1)).subscribe(sessao => {
       this.sessaoUsuario = sessao;
       if (!sessao.isAutenticado) {
-        this.router.navigate(['login'], { replaceUrl: true });
+        this.router.navigate(['login']);
       }
     });
   }

@@ -1,13 +1,18 @@
 <p>Favor, efetue o login</p>
 <div>
-  CPF/CNPJ:
-  <input name="cpfCnpj" value="" />
+  <div>
+    CPF/CNPJ:
+    <input name="cpfCnpj" [formControl]="cpfCnpj" (keydown)="onInputKeydown()" />
+  </div>
+  <div>
+    Senha:
+    <input name="senha" [formControl]="senha" (keydown)="onInputKeydown()" />
+  </div>
 </div>
 <div>
-  Senha:
-  <input name="senha" value="" />
+  <span style="font-weight: 500; color: red;">{{ mensagem }}</span>
 </div>
 <div>
-  <button (btnClick)="clickLogin()">LOGIN</button>
+  <button (click)="clickLogin()">LOGIN</button>
 </div>
 

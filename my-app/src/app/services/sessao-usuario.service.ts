@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
+import { AppError } from '../models/app-error';
 import { SessaoUsuario, UsuarioInfo } from '../models/usuario';
 import { HttpService } from './http.service';
 
@@ -12,14 +13,19 @@ export class SessaoUsuarioService {
     private httpService: HttpService,
   ) { }
 
-  public login(id: string, senha: string): Observable<SessaoUsuario> | null {
-    // TODO:
-    return null;
+  public login(id: string, senha: string): Observable<any> {
+    return this.httpService.get(`/clientes?cpf=${id}&senha=${senha}`)
   }
 
   public getUsuarioInfo(): Observable<SessaoUsuario> {
     return this.httpService.get<UsuarioInfo>('/sessao-usuario').pipe(
-      map(usrInfo => new SessaoUsuario(usrInfo, true))
+      map(usrInfo => new SessaoUsuario(usrInfo, true)),
+      catchError((error: AppError) => {
+        if (error.status === 404) {
+          return of(new SessaoUsuario(null, true))
+        }
+        throw error;
+      })
     );
   }
 }

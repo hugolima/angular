@@ -29,7 +29,6 @@ export class SessaoUsuario {
 }
 
 export interface UsuarioInfo {
-  id: number;
   cpfCnpj: string;
   nome: string;
 }
