@@ -1,0 +1,14 @@
+.card-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5em;
+}
+
+.card-login span:first-child {
+  margin-top: 1em;
+}
+
+.card-login span {
+  margin-bottom: 1.5em;
+}

@@ -37,6 +37,12 @@ export class LoginComponent implements OnInit {
     this.mensagem = '';
   }
 
+  clickLimpar() {
+    this.mensagem = '';
+    this.cpfCnpj.reset();
+    this.senha.reset();
+  }
+
   clickLogin() {
     if (!this.cpfCnpj.valid || !this.senha.valid) {
       this.mensagem = 'Preencha todos os campos';

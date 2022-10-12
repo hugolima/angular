@@ -8,6 +8,12 @@ import { HomeComponent } from './views/home/home.component';
 import { LoginComponent } from './views/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import {ButtonModule} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
+import {CardModule} from 'primeng/card';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,6 +25,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    ButtonModule,
+    InputTextModule,
+    CardModule,
+    MessagesModule,
+    MessageModule,
     AppRoutingModule,
   ],
   providers: [],

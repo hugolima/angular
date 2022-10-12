@@ -1,18 +1,19 @@
-<p>Favor, efetue o login</p>
-<div>
-  <div>
-    CPF/CNPJ:
-    <input name="cpfCnpj" [formControl]="cpfCnpj" (keydown)="onInputKeydown()" />
-  </div>
-  <div>
-    Senha:
-    <input name="senha" [formControl]="senha" (keydown)="onInputKeydown()" />
-  </div>
-</div>
-<div>
-  <span style="font-weight: 500; color: red;">{{ mensagem }}</span>
-</div>
-<div>
-  <button (click)="clickLogin()">LOGIN</button>
+<div class="card-login">
+    <p-card header="Favor, efetue o login" [style]="{width: '360px'}" styleClass="p-card-shadow">
+      <span class="p-float-label">
+        <input id="cpfCnpj" type="text" pInputText [formControl]="cpfCnpj" (keydown)="onInputKeydown()">
+        <label for="cpfCnpj">CPF/CNPJ</label>
+      </span>
+      <span class="p-float-label">
+        <input id="senha" type="password" pInputText [formControl]="senha" (keydown)="onInputKeydown()">
+        <label for="senha">Senha</label>
+      </span>
+      <p-message *ngIf="mensagem" severity="error" [text]="mensagem"></p-message>
+
+      <ng-template pTemplate="footer">
+        <p-button label="LOGIN" icon="pi pi-check" (click)="clickLogin()"></p-button>
+        <p-button label="LIMPAR" icon="pi pi-times" (click)="clickLimpar()" styleClass="p-button-secondary" [style]="{'margin-left': '.5em'}"></p-button>
+      </ng-template>
+    </p-card>
 </div>
 
