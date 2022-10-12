@@ -27,4 +27,8 @@ export class AppComponent implements OnInit {
   get isUsuarioLoaded() {
     return this.sessaoUsuario?.isLoaded;
   }
+
+  get isTelaLogin() {
+    return window.location.pathname === '/login';
+  }
 }
