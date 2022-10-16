@@ -22,6 +22,7 @@ export class SessaoUsuarioService {
       map(usrInfo => new SessaoUsuario(usrInfo, true)),
       catchError((error: AppError) => {
         if (error.status === 404) {
+          //return of(new SessaoUsuario({ "cpfCnpj": "11111111111", "nome": "Fulano de Tal" }, true))
           return of(new SessaoUsuario(null, true))
         }
         throw error;

@@ -1,9 +1,18 @@
 <div class="main" *ngIf="isUsuarioLoaded">
-  <div class="main" *ngIf="!isTelaLogin">
-    <div>Tela Principal</div>
-    <router-outlet></router-outlet>
+  <div *ngIf="!isTelaLogin">
+    <app-header></app-header>
+    <div class="main-div">
+      <div>
+        <app-menu></app-menu>
+      </div>
+      <div style="margin-left: 1em; width: 100%">
+        <p-panel header="Bem vindo!">
+          <router-outlet></router-outlet>
+        </p-panel>
+      </div>
+    </div>
   </div>
-  <div class="main" *ngIf="isTelaLogin">
+  <div *ngIf="isTelaLogin">
     <router-outlet></router-outlet>
   </div>
 </div>
